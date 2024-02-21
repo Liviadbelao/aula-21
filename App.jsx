@@ -3,10 +3,20 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 
 export default function App() {
-  const [task, setTask] = useState('')
+  const [task, setTask] = useState('');
+  const [tasks, setTasks] = useState([]);
+	
+	const addTask = () => {
+	  if (task.trim().length > 0) {
+	    setTasks([...tasks, { id: Math.random().toString(), value: task }]);
+	    setTask("");
+	  }
+	};
+ 
 	return (
     <View style={styles.container}>
     <View style={styles.form}>
+  
       <TextInput
         placeholder="Digite uma nova tarefa"
        style={styles.inputLine}
@@ -14,11 +24,19 @@ export default function App() {
         value={task}
       />
       <TouchableOpacity
+      	onPress={addTask}
       style={styles.button}
       >
         <Text style={styles.buttonText}>Adicionar</Text>
       </TouchableOpacity>
     </View>
+    <View style={styles.listTitle}>
+  {tasks.length === 0 ? (
+    <Text style={styles.listRed}>Nenhuma Tarefa Cadastrada</Text>
+  ) : (
+    <Text style={styles.listGreen}>Tarefas Cadastradas</Text>
+  )}
+</View>
     <StatusBar style="auto" />
   </View>
 	);
@@ -31,7 +49,9 @@ const styles = StyleSheet.create({
   form: {
     display: "flex",
     flexDirection:"row",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 20,
   },
   inputLine: {
     borderBottomWidth: 1,
@@ -47,4 +67,16 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
   },
+  listTitle:{
+    marginBottom:10,
+  
+  },
+  listRed:{
+    color:"red",
+    textAlign: "center",
+  },
+  listGreen:{
+    color:"green",
+    textAlign: "center",
+  }
 });
