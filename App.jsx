@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 
@@ -12,7 +12,9 @@ export default function App() {
 	    setTask("");
 	  }
 	};
- 
+  const removeTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
 	return (
     <View style={styles.container}>
     <View style={styles.form}>
@@ -37,6 +39,22 @@ export default function App() {
     <Text style={styles.listGreen}>Tarefas Cadastradas</Text>
   )}
 </View>
+<ScrollView style={styles.containerList} showsVerticalScrollIndicator={false}>
+  {tasks.map((task) => (
+    <View
+      key={task.id}
+      style={styles.list}
+    >
+      <Text style={styles.widthText}>{task.value}</Text>
+      <TouchableOpacity
+        onPress={() => removeTask(task.id)}
+        style={styles.buttonDelete}
+      >
+        <Text   style={styles.buttonText}>Remover</Text>
+      </TouchableOpacity>
+    </View>
+  ))}
+</ScrollView>
     <StatusBar style="auto" />
   </View>
 	);
@@ -68,7 +86,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   listTitle:{
-    marginBottom:10,
+    marginBottom:20,
   
   },
   listRed:{
@@ -78,5 +96,28 @@ const styles = StyleSheet.create({
   listGreen:{
     color:"green",
     textAlign: "center",
+  },
+  containerList: {
+    marginBottom:24,
+  
+  },
+  list:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    marginBottom: 10,
+    paddingBottom: 5,
+  },
+   buttonDelete:{
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius:5,
+  },
+
+  widthText:{
+    width:"75%",
   }
 });
